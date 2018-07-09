@@ -8,6 +8,7 @@ const { sequelize } = require('./sequelize-connection');
 
 import { Artists } from './models/artist';
 import { Users } from './models/user';
+import { Productions } from './models/production';
 
 const app = expresses();
 const port = process.env.port || 8080;
@@ -27,6 +28,12 @@ app.use('/test', async (req, res) => {
 app.use('/test2', async (req, res) => {
   await Artists.create({ name: 'test1', type: 'old', createdBy: 1, updatedBy: 1  });
   const data = await Artists.findAll();
+  res.json(data);
+});
+
+app.use('/test3', async (req, res) => {
+  await Productions.create({ name: 'test1', createdBy: 1, updatedBy: 1  });
+  const data = await Productions.findAll();
   res.json(data);
 });
 
