@@ -12,6 +12,8 @@ import { Productions } from './models/production';
 import { Albums } from './models/album';
 import { Categories } from './models/category';
 import { Songs } from './models/song';
+import { ArtistSongs } from './models/artist_song';
+import { Playlists } from './models/playlist';
 
 const app = expresses();
 const port = process.env.port || 8080;
@@ -56,6 +58,18 @@ app.use('/test5', async (req, res) => {
 app.use('/test6', async (req, res) => {
   await Songs.create({ name: 'test1', createdBy: 1, updatedBy: 1, album_id: 1, category_id: 1 });
   const data = await Songs.findAll();
+  res.json(data);
+});
+
+app.use('/test7', async (req, res) => {
+  await ArtistSongs.create({ artistId: 4 , songId: 3});
+  const data = await ArtistSongs.findAll();
+  res.json(data);
+});
+
+app.use('/test8', async (req, res) => {
+  await Playlists.create({ name: 'test1' , userId: 1, });
+  const data = await Playlists.findAll();
   res.json(data);
 });
 
