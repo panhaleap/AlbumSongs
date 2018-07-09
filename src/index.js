@@ -9,6 +9,9 @@ const { sequelize } = require('./sequelize-connection');
 import { Artists } from './models/artist';
 import { Users } from './models/user';
 import { Productions } from './models/production';
+import { Albums } from './models/album';
+import { Categories } from './models/category';
+import { Songs } from './models/song';
 
 const app = expresses();
 const port = process.env.port || 8080;
@@ -34,6 +37,25 @@ app.use('/test2', async (req, res) => {
 app.use('/test3', async (req, res) => {
   await Productions.create({ name: 'test1', createdBy: 1, updatedBy: 1  });
   const data = await Productions.findAll();
+  res.json(data);
+});
+
+app.use('/test4', async (req, res) => {
+  await Albums.create({ name: 'test1', createdBy: 1, updatedBy: 1, production_id: 1  });
+  const data = await Albums.findAll();
+  res.json(data);
+});
+
+
+app.use('/test5', async (req, res) => {
+  await Categories.create({ name: 'test2', createdBy: 1, updatedBy: 1  });
+  const data = await Categories.findAll();
+  res.json(data);
+});
+
+app.use('/test6', async (req, res) => {
+  await Songs.create({ name: 'test1', createdBy: 1, updatedBy: 1, album_id: 1, category_id: 1 });
+  const data = await Songs.findAll();
   res.json(data);
 });
 
