@@ -10,8 +10,8 @@ export const Categories = sequelize.define('category', {
   },
   name: { type: Sequelize.STRING(255) },
   status: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: true
+    type: Sequelize.STRING(8),
+    defaultValue: 'active'
   },
   createdBy: {
     type: Sequelize.INTEGER,

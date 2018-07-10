@@ -11,15 +11,12 @@ export const Albums = sequelize.define('album', {
   name: { type: Sequelize.STRING(255) },
   image: { type: Sequelize.BLOB },
   production_id: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'production',
-      key: 'id'
-    }
+    type: Sequelize.INTEGER
   },
-  status: { 
-      type: Sequelize.BOOLEAN,
-      defaultValue : true },
+  status: {
+    type: Sequelize.STRING(8),
+    defaultValue: 'active'
+  },
   createdBy: {
     type: Sequelize.INTEGER,
     references: {
@@ -35,8 +32,3 @@ export const Albums = sequelize.define('album', {
     }
   }
 });
-
-
-
-
-

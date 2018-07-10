@@ -1,17 +1,17 @@
-import { Productions } from '../../../models/production';
+import { Categories } from '../../../models/category';
 import { succeed } from '../../../common/response';
 import { getLimit, getOffset } from '../../../common/query_condition';
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op;
 
-export const createProduction = async (req, res) => {
-  const { name, logo } = req.body;
-  const production = new Productions({ name, logo });
-  const result = await production.save();
+export const createCategory = async (req, res) => {
+  const { name } = req.body;
+  const category = new Categories({ name });
+  const result = await category.save();
   succeed(res, result, 200);
 };
 
-export const getProductionList = async (req, res) => {
+export const getCategoryList = async (req, res) => {
   let { limit = 10, offset = 0, status, name } = req.query;
   limit = getLimit(limit);
   offset = getOffset(offset);
@@ -19,25 +19,25 @@ export const getProductionList = async (req, res) => {
   const filterByName = name ? { name: { [Op.like]: `%${name}%` } } : {};
 
   const where = { ...filterByName, ...filterByStatus };
-  const { rows, count } = await Productions.findAndCountAll({ where, offset, limit });
+  const { rows, count } = await Categories.findAndCountAll({ where, offset, limit });
   succeed(res, { data: rows, metadata: { limit, offset, total: count } }, 200);
 };
 
-export const getProductionById = async (req, res) => {
+export const getCategoryById = async (req, res) => {
   const { id } = req.params;
-  const rows = await Productions.findAll({ where: { id, status: 'active' } });
+  const rows = await Categories.findAll({ where: { id, status: 'active' } });
   succeed(res, { data: rows }, 200);
 };
 
-export const updateProductionById = async (req, res) => {
+export const updateCategoryById = async (req, res) => {
   const data = req.body;
   const { id } = req.params;
-  await Productions.update(data, { where: { id, status: 'active' } });
+  await Categories.update(data, { where: { id, status: 'active' } });
   succeed(res, { message: 'Updated Success' }, 200);
 };
 
-export const deleteProductionById = async (req, res) => {
+export const deleteCategoryById = async (req, res) => {
   const { id } = req.params;
-  await Productions.update({ status: 'inactive' }, { where: { id, status: 'active' } });
+  await Categories.update({ status: 'inactive' }, { where: { id, status: 'active' } });
   succeed(res, { message: 'Deleted Success' }, 200);
 };

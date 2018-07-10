@@ -26,8 +26,8 @@ export const Songs = sequelize.define('song', {
     }
   },
   status: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: true
+    type: Sequelize.STRING(8),
+    defaultValue: 'active'
   },
   createdBy: {
     type: Sequelize.INTEGER,

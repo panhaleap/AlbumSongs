@@ -11,9 +11,10 @@ export const Artists = sequelize.define('artist', {
   name: { type: Sequelize.STRING(255) },
   type: { type: Sequelize.TEXT },
   image: { type: Sequelize.BLOB },
-  status: { 
-      type: Sequelize.BOOLEAN,
-      defaultValue : true },
+  status: {
+    type: Sequelize.STRING(8),
+    defaultValue: 'active'
+  },
   createdBy: {
     type: Sequelize.INTEGER,
     references: {
@@ -28,9 +29,4 @@ export const Artists = sequelize.define('artist', {
       key: 'id'
     }
   }
-  
 });
-
-
-
-

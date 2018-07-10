@@ -1,17 +1,17 @@
-import { Productions } from '../../../models/production';
+import { Albums } from '../../../models/album';
 import { succeed } from '../../../common/response';
 import { getLimit, getOffset } from '../../../common/query_condition';
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op;
 
-export const createProduction = async (req, res) => {
-  const { name, logo } = req.body;
-  const production = new Productions({ name, logo });
-  const result = await production.save();
+export const createAlbum = async (req, res) => {
+  const { name, image, production_id } = req.body;
+  const album = new Albums({ name, image, production_id });
+  const result = await album.save();
   succeed(res, result, 200);
 };
 
-export const getProductionList = async (req, res) => {
+export const getAlbumList = async (req, res) => {
   let { limit = 10, offset = 0, status, name } = req.query;
   limit = getLimit(limit);
   offset = getOffset(offset);
@@ -19,25 +19,25 @@ export const getProductionList = async (req, res) => {
   const filterByName = name ? { name: { [Op.like]: `%${name}%` } } : {};
 
   const where = { ...filterByName, ...filterByStatus };
-  const { rows, count } = await Productions.findAndCountAll({ where, offset, limit });
+  const { rows, count } = await Albums.findAndCountAll({ where, offset, limit });
   succeed(res, { data: rows, metadata: { limit, offset, total: count } }, 200);
 };
 
-export const getProductionById = async (req, res) => {
+export const getAlbumById = async (req, res) => {
   const { id } = req.params;
-  const rows = await Productions.findAll({ where: { id, status: 'active' } });
+  const rows = await Albums.findAll({ where: { id, status: 'active' } });
   succeed(res, { data: rows }, 200);
 };
 
-export const updateProductionById = async (req, res) => {
+export const updateAlbumById = async (req, res) => {
   const data = req.body;
   const { id } = req.params;
-  await Productions.update(data, { where: { id, status: 'active' } });
+  await Albums.update(data, { where: { id, status: 'active' } });
   succeed(res, { message: 'Updated Success' }, 200);
 };
 
-export const deleteProductionById = async (req, res) => {
+export const deleteAlbumById = async (req, res) => {
   const { id } = req.params;
-  await Productions.update({ status: 'inactive' }, { where: { id, status: 'active' } });
+  await Albums.update({ status: 'inactive' }, { where: { id, status: 'active' } });
   succeed(res, { message: 'Deleted Success' }, 200);
 };

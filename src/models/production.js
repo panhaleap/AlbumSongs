@@ -30,6 +30,8 @@ export const Productions = sequelize.define('production', {
   
 });
 
+sequelize.sync();
+
 
 
 
