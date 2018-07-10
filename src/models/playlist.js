@@ -1,7 +1,7 @@
 const { sequelize } = require('../sequelize-connection');
 import uuid from 'uuid/v4';
 import Sequelize from 'sequelize';
-
+import { Users } from './user';
 export const Playlists = sequelize.define('playlist', {
   id: {
     allowNull: false,
@@ -12,13 +12,6 @@ export const Playlists = sequelize.define('playlist', {
   name: {
     type: Sequelize.STRING(255),
     allowNull: false
-  },
-  userId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'user',
-      key: 'id'
-    }
   },
   createdBy: {
     type: Sequelize.INTEGER,
@@ -35,3 +28,5 @@ export const Playlists = sequelize.define('playlist', {
     }
   }
 });
+
+Playlists.belongsTo(Users);

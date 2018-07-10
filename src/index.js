@@ -2,8 +2,8 @@ import 'dotenv/config';
 import expresses from 'express';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
-import Sequelize from 'sequelize';
-const Op = Sequelize.Op;
+import { ENDPOINT, ADMIN_ENDPOINT } from './common/constant';
+import productionRoute from './api/admin/production/production.route';
 const { sequelize } = require('./sequelize-connection');
 
 const app = expresses();
@@ -13,12 +13,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-app.use('/test', async (req, res) => {
-  sequelize.sync();
-  await Users.create({ username: 'test2', password: '123', email: 'panha@hotmail.com', role: 'public', createdBy: 1, updatedBy: 1  });
-  const data = await Users.findAll();
-  res.json(data);
+app.all('/*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,accept,access_token,X-Requested-With');
+  next();
 });
 
-
+app.use(ENDPOINT + ADMIN_ENDPOINT, productionRoute);
 app.listen(port, () => console.log(`Listen to port ${port}`));
+
+sequelize.sync();

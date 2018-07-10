@@ -11,8 +11,8 @@ export const Productions = sequelize.define('production', {
   name: { type: Sequelize.STRING(255) },
   logo: { type: Sequelize.BLOB },
   status: { 
-      type: Sequelize.BOOLEAN,
-      defaultValue : true },
+      type: Sequelize.STRING(8),
+      defaultValue : 'active' },
   createdBy: {
     type: Sequelize.INTEGER,
     references: {
@@ -29,8 +29,6 @@ export const Productions = sequelize.define('production', {
   }
   
 });
-
-sequelize.sync();
 
 
 

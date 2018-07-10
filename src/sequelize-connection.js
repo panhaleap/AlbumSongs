@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 
-const { DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_LOGGING, DB_PASSWORD, DB_DIALECT } = process.env;
+const { DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD, DB_DIALECT } = process.env;
 
 export const sequelize = new Sequelize({
   host: DB_HOST,

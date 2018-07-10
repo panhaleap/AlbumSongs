@@ -68,7 +68,7 @@ app.use('/test7', async (req, res) => {
 });
 
 app.use('/test8', async (req, res) => {
-  await Playlists.create({ name: 'test1' , userId: 1, });
+  await Playlists.create({ name: 'test4' , userId: 1, });
   const data = await Playlists.findAll();
   res.json(data);
 });
