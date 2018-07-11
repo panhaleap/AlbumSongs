@@ -19,6 +19,7 @@ import songRoute from './api/admin/song/song.route';
 import artistSongRoute from './api/admin/artist_song/artist_song.route';
 import artistRoutePublic from './api/artist/artist.route';
 import songRoutePublic from './api/song/song.route';
+import productionsRoutePublic from './api/production/production.route';
 const { sequelize } = require('./sequelize-connection');
 
 const app = expresses();
@@ -42,6 +43,7 @@ app.use(ENDPOINT + ADMIN_SONG_ENDPOINT, songRoute);
 app.use(ENDPOINT + ADMIN_ARTIST_SONG_ENDPOINT, artistSongRoute);
 app.use(ENDPOINT, artistRoutePublic);
 app.use(ENDPOINT, songRoutePublic);
+app.use(ENDPOINT, productionsRoutePublic);
 app.listen(port, () => console.log(`Listen to port ${port}`));
 
 //sequelize.sync();
