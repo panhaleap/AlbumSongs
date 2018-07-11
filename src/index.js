@@ -8,13 +8,17 @@ import {
   ADMIN_ALBUM_ENDPOINT,
   ADMIN_CATEGORIES_ENDPOINT,
   ADMIN_ARTIST_ENDPOINT,
-  ADMIN_SONG_ENDPOINT
+  ADMIN_SONG_ENDPOINT,
+  ADMIN_ARTIST_SONG_ENDPOINT
 } from './common/constant';
 import productionRoute from './api/admin/production/production.route';
 import albumRoute from './api/admin/album/album.route';
 import categoryRoute from './api/admin/category/category.route';
 import artistRoute from './api/admin/artist/artist.route';
 import songRoute from './api/admin/song/song.route';
+import artistSongRoute from './api/admin/artist_song/artist_song.route';
+import artistRoutePublic from './api/artist/artist.route';
+import songRoutePublic from './api/song/song.route';
 const { sequelize } = require('./sequelize-connection');
 
 const app = expresses();
@@ -35,6 +39,9 @@ app.use(ENDPOINT + ADMIN_ALBUM_ENDPOINT, albumRoute);
 app.use(ENDPOINT + ADMIN_CATEGORIES_ENDPOINT, categoryRoute);
 app.use(ENDPOINT + ADMIN_ARTIST_ENDPOINT, artistRoute);
 app.use(ENDPOINT + ADMIN_SONG_ENDPOINT, songRoute);
+app.use(ENDPOINT + ADMIN_ARTIST_SONG_ENDPOINT, artistSongRoute);
+app.use(ENDPOINT, artistRoutePublic);
+app.use(ENDPOINT, songRoutePublic);
 app.listen(port, () => console.log(`Listen to port ${port}`));
 
-sequelize.sync();
+//sequelize.sync();
