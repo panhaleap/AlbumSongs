@@ -29,3 +29,7 @@ export const getSongPublicCondition = (query, songId, artistId, songName, artist
 
   return query + putWhereToEndByLimitOffset(limit, offset);
 };
+
+export const getSongPublicConditionBySongId = (query, songId) => {
+  return query +  ` and songs.id = ${songId} `;
+};
