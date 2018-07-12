@@ -20,6 +20,13 @@ import artistSongRoute from './api/admin/artist_song/artist_song.route';
 import artistRoutePublic from './api/artist/artist.route';
 import songRoutePublic from './api/song/song.route';
 import productionsRoutePublic from './api/production/production.route';
+const passportConf = require('./passport');
+const passport = require('passport');
+
+//Test AWT
+import testAWT_ROUTE from './testAWT.route';
+import testAWT_NS_ROUTE from './testAWT_noSecret.route';
+
 const { sequelize } = require('./sequelize-connection');
 
 const app = expresses();
@@ -44,6 +51,8 @@ app.use(ENDPOINT + ADMIN_ARTIST_SONG_ENDPOINT, artistSongRoute);
 app.use(ENDPOINT, artistRoutePublic);
 app.use(ENDPOINT, songRoutePublic);
 app.use(ENDPOINT, productionsRoutePublic);
+app.use(ENDPOINT, testAWT_NS_ROUTE);
+app.use(ENDPOINT, passport.authenticate('jwt', {session: false}), testAWT_ROUTE);
 app.listen(port, () => console.log(`Listen to port ${port}`));
 
 //sequelize.sync();
