@@ -41,7 +41,27 @@ export const signUp = async (req, res, next) => {
   }
 };
 
-
 export const secret = async (req, res) => {
-    return res.json('Helllllllllllllllllllllllllllllllllllo');
+  console.log('secret  req: ', req.user);
+
+  /*
+
+  req.user ==> user id
+
+  req.login()
+  req.logout()
+  req.isAuthenticated()
+  req.isUnauthenticated()
+
+***
+https://blog.jscrambler.com/implementing-jwt-using-passport/
+
+*
+http://www.passportjs.org/docs/basic-digest/
+
+https://www.sitepoint.com/using-json-web-tokens-node-js/
+
+  */
+
+  return res.json('Helllllllllllllllllllllllllllllllllllo');
 };

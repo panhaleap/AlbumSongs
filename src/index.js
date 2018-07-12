@@ -20,14 +20,19 @@ import artistSongRoute from './api/admin/artist_song/artist_song.route';
 import artistRoutePublic from './api/artist/artist.route';
 import songRoutePublic from './api/song/song.route';
 import productionsRoutePublic from './api/production/production.route';
-const passportConf = require('./passport');
+// const passportConf = require('./passport');
+const auth = require('./auth.js')();
 const passport = require('passport');
 
 //Test AWT
+import authRoute from './api/auth/auth.route';
 import testAWT_ROUTE from './testAWT.route';
 import testAWT_NS_ROUTE from './testAWT_noSecret.route';
 
 const { sequelize } = require('./sequelize-connection');
+
+// console.clear();
+// console.log('auth: ', auth);
 
 const app = expresses();
 const port = process.env.port || 8080;
@@ -35,6 +40,9 @@ const port = process.env.port || 8080;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
+
+// Initialize Passport
+app.use(auth.initialize());
 
 app.all('/*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -52,7 +60,10 @@ app.use(ENDPOINT, artistRoutePublic);
 app.use(ENDPOINT, songRoutePublic);
 app.use(ENDPOINT, productionsRoutePublic);
 app.use(ENDPOINT, testAWT_NS_ROUTE);
-app.use(ENDPOINT, passport.authenticate('jwt', {session: false}), testAWT_ROUTE);
+app.use(ENDPOINT, authRoute);
+// app.use(ENDPOINT, passport.authenticate('jwt', { session: false }), testAWT_ROUTE);
+app.use(ENDPOINT, auth.authenticate(), testAWT_ROUTE);
+
 app.listen(port, () => console.log(`Listen to port ${port}`));
 
 //sequelize.sync();
