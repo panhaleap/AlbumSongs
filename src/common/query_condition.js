@@ -14,12 +14,13 @@ export const getTotal = result => {
 };
 
 const putWhereToEndByLimitOffset = (limit, offset) => {
+  limit = limit;
   const putWhereToEnd = ` LIMIT ${limit} OFFSET ${offset} `;
   return putWhereToEnd;
 };
 
 export const getSongPublicCondition = (query, songId, artistId, songName, artistType, album_id, limit, offset) => {
-  songName = '/'%' + songName + '%'/';
+  songName = ('/' % ' + songName + ') % '/';
 
   query = songId ? query + ` and songs.id = ${songId} ` : query;
   query = artistId ? query + ` and artists.id = ${artistId} ` : query;
@@ -31,5 +32,12 @@ export const getSongPublicCondition = (query, songId, artistId, songName, artist
 };
 
 export const getSongPublicConditionBySongId = (query, songId) => {
-  return query +  ` and songs.id = ${songId} `;
+  return query + ` and songs.id = ${songId} `;
+};
+
+export const getAlbumOfProductionCondition = (query, productionId, albumName, limit, offset) => {
+  query = productionId ? query + ` and productions.id = ${productionId} ` : query;
+  query = albumName ? query + ` and albums.name like '%${albumName}%' ` : query;
+
+  return query + putWhereToEndByLimitOffset(limit, offset);
 };

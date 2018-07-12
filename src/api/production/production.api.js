@@ -1,6 +1,9 @@
 import { Productions } from '../../models/production';
-import { succeed } from '../../common/response';
+import { getQueryAlbumOfProductionForPublic } from '../../common/raw_query';
+import { getAlbumOfProductionCondition } from '../../common/query_condition';
+import { succeed, failed } from '../../common/response';
 import { getLimit, getOffset } from '../../common/query_condition';
+import { sequelize } from '../../sequelize-connection';
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op;
 
@@ -16,8 +19,18 @@ export const getProductionList = async (req, res) => {
   succeed(res, { data: rows, metadata: { limit, offset, total: count } }, 200);
 };
 
-export const getProductionById = async (req, res) => {
-  const { productionId } = req.params;
-  const rows = await Productions.findAll({ where: { productionId, status: 'active' } });
-  succeed(res, { data: rows }, 200);
+export const getProductionAlbumsByProductId = async (req, res) => {
+  try {
+    let { albumName, limit = 10, offset = 0 } = req.query;
+    limit = getLimit(limit);
+    offset = getOffset(offset);
+    const { productionId } = req.params;
+    let query = getQueryAlbumOfProductionForPublic();
+    query = getAlbumOfProductionCondition(query, productionId, albumName, limit, offset);
+
+    const rows = await sequelize.query(query, { type: Sequelize.QueryTypes.SELECT });
+    succeed(res, { data: rows }, 200);
+  } catch (error) {
+    failed(res, error.message, 500);
+  }
 };
