@@ -43,9 +43,8 @@ export const signUp = async (req, res, next) => {
 
 export const secret = async (req, res) => {
   console.log('secret  req: ', req.user);
-
+  
   /*
-
   req.user ==> user id
 
   req.login()

@@ -1,10 +1,11 @@
 const jwt = require('jwt-simple');
 const bcrypt = require('bcryptjs');
 const { JWT_SECRET } = process.env;
-
+import Sequelize from 'sequelize';
+const Op = Sequelize.Op;
+import { succeed, failed } from '../../common/response';
 // import JWT from 'jsonwebtoken';
 import { Users } from '../../models/user';
-import { succeed } from '../../common/response';
 
 // JWT.sign == jwt.encode
 
@@ -54,12 +55,12 @@ export const postSignUp = async (req, res) => {
     if (userEmailExist) {
       return failed(res, 'Username or Email, already in use', 400);
     }
-    const newUser = new Users({ username, email, password });
-    await newUser.save();
+    const newUser = await Users.create({ username, email, password }, { raw: true });
+    //await newUser.save();
 
     const token = singToken(newUser);
 
-    succeed(res, token, 200);
+    succeed(res, { newUser, token }, 200);
   } catch (error) {
     console.log(error);
     failed(res, error.message, 403);

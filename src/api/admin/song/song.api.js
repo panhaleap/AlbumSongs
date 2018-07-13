@@ -9,6 +9,19 @@ export const createSong = async (req, res) => {
   const song = new Songs({ name, duration, size, album_id, category_id });
   const result = await song.save();
   succeed(res, result, 200);
+  //
+  
+  // Songs.create(survey, {
+  //   include: [
+  //     {
+  //       model: models.Question,
+  //       include: [models.Option]
+  //     }
+  //   ]
+  // }).then(function() {
+  //   reply({ success: 1 });
+  // });
+  //
 };
 
 export const getSongList = async (req, res) => {

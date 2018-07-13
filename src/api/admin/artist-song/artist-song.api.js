@@ -1,9 +1,7 @@
-import { ArtistSongs } from '../../../models/artist_song';
+import { ArtistSongs } from '../../../models/artist-song';
 import { succeed, failed } from '../../../common/response';
-import { getLimit, getOffset } from '../../../common/query_condition';
-import Sequelize from 'sequelize';
+import { getLimit, getOffset } from '../../../common/metadata-of-query';
 import { Artists } from '../../../models/artist';
-const Op = Sequelize.Op;
 
 export const createArtistSong = async (req, res) => {
   try {

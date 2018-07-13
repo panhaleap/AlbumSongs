@@ -1,5 +1,5 @@
 const { sequelize } = require('../sequelize-connection');
-
+import { ArtistSongs } from '../models/artist-song';
 import Sequelize from 'sequelize';
 
 export const Songs = sequelize.define('song', {
@@ -9,7 +9,7 @@ export const Songs = sequelize.define('song', {
     primaryKey: true
   },
   name: { type: Sequelize.STRING(255) },
-  duration: { type:Sequelize.TIME },
+  duration: { type: Sequelize.TIME },
   size: { type: Sequelize.DOUBLE },
   album_id: {
     type: Sequelize.INTEGER,
@@ -44,3 +44,20 @@ export const Songs = sequelize.define('song', {
     }
   }
 });
+
+// return Songs.create(
+//   {
+//     name: 'Let it go',
+//     ArtistSongs: {
+//       artistId: 1,
+//       songId: 1
+//     }
+//   },
+//   {
+//     include: [
+//       {
+//         association: Songs.ArtistSongs
+//       }
+//     ]
+//   }
+// );

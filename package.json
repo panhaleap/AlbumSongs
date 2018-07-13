@@ -28,6 +28,9 @@
     "body-parser": "^1.18.3",
     "debug": "^3.1.0",
     "dotenv": "^6.0.0",
+    "eslint": "^5.1.0",
+    "eslint-config-babel": "^7.0.2",
+    "eslint-config-prettier": "^2.9.0",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
     "jwt-simple": "^0.5.1",
@@ -37,11 +40,16 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "sequelize": "^4.38.0",
+    "string-template": "^1.0.0",
     "uuid": "^3.3.2"
   },
   "babel": {
     "presets": [
       "latest"
     ]
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint-plugin-flowtype": "^2.50.0"
   }
 }

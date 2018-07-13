@@ -8,3 +8,6 @@ authRoute.post('/sign-up', postSignUp);
 // authRoute.get('/sign-out', getSingOut);
 
 export default authRoute;
+
+
+

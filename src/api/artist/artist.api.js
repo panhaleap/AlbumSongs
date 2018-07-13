@@ -1,6 +1,6 @@
 import { Artists } from '../../models/artist';
 import { succeed } from '../../common/response';
-import { getLimit, getOffset } from '../../common/query_condition';
+import { getLimit, getOffset } from '../../common/metadata-of-query';
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op;
 

@@ -1,10 +1,12 @@
 import { Productions } from '../../models/production';
-import { getQueryAlbumOfProductionForPublic } from '../../common/raw_query';
-import { getAlbumOfProductionCondition } from '../../common/query_condition';
 import { succeed, failed } from '../../common/response';
-import { getLimit, getOffset } from '../../common/query_condition';
+import { getLimit, getOffset } from '../../common/metadata-of-query';
 import { sequelize } from '../../sequelize-connection';
 import Sequelize from 'sequelize';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+const sql = readFileSync(resolve(__dirname, '../../queries/album/get-albums-production.sql'));
+import * as format from 'string-template';
 const Op = Sequelize.Op;
 
 export const getProductionList = async (req, res) => {
@@ -25,10 +27,24 @@ export const getProductionAlbumsByProductId = async (req, res) => {
     limit = getLimit(limit);
     offset = getOffset(offset);
     const { productionId } = req.params;
-    let query = getQueryAlbumOfProductionForPublic();
-    query = getAlbumOfProductionCondition(query, productionId, albumName, limit, offset);
 
-    const rows = await sequelize.query(query, { type: Sequelize.QueryTypes.SELECT });
+    const filterProductId = productionId ? ` and productions.id = :productionId ` : '';
+    const filterAlbumName = albumName ? ` and albums.name like ':albumName' ` : '';
+
+    const query = format(sql, {
+      filterProductId,
+      filterAlbumName,
+      limit,
+      offset
+    });
+
+    const rows = await sequelize.query(query, {
+      type: Sequelize.QueryTypes.SELECT,
+      replacements: {
+        productionId,
+        albumName
+      }
+    });
     succeed(res, { data: rows }, 200);
   } catch (error) {
     failed(res, error.message, 500);
