@@ -10,27 +10,9 @@ export const createSong = async (req, res) => {
   const { name, duration, size, album_id, category_id, artistId } = req.body;
   const newSong = await Songs.create({ name, duration, size, album_id, category_id });
 
-  //const result = await Songs.findAll({where: {id: newSong.id}});
   await ArtistSongs.create({ songId: newSong.id, artistId});
   const result = await Songs.findOne({where: {id: newSong.id}, include: [{ model: Artists}]});
-
-  //const result = await Songs.findOne({where: {id: newSong.id}},{ include: [{attributes: ['id'], model: Artists}] });
-  // await Songs.create({ name, duration, size, album_id, category_id, artists: [{ id: 2 }] });
-
   succeed(res, {data: result}, 200);
-  //
-
-  // Songs.create(survey, {
-  //   include: [
-  //     {
-  //       model: models.Question,
-  //       include: [models.Option]
-  //     }
-  //   ]
-  // }).then(function() {
-  //   reply({ success: 1 });
-  // });
-  //
 };
 
 export const getSongList = async (req, res) => {

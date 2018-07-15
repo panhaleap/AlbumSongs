@@ -9,7 +9,8 @@ import {
   ADMIN_CATEGORIES_ENDPOINT,
   ADMIN_ARTIST_ENDPOINT,
   ADMIN_SONG_ENDPOINT,
-  ADMIN_ARTIST_SONG_ENDPOINT
+  ADMIN_ARTIST_SONG_ENDPOINT,
+  USER_PLAYLIST_ENDPOINT
 } from './common/constant';
 import productionRoute from './api/admin/production/production.route';
 import albumRoute from './api/admin/album/album.route';
@@ -28,6 +29,7 @@ const auth = require('./auth.js')();
 import authRoute from './api/auth/auth.route';
 import testAWT_ROUTE from './testAWT.route';
 import testAWT_NS_ROUTE from './testAWT-noSecret.route';
+import playlistRoute from './api/playlist/playlist.route';
 
 //const { sequelize } = require('./sequelize-connection');
 
@@ -62,6 +64,7 @@ app.use(ENDPOINT, productionsRoutePublic);
 app.use(ENDPOINT, testAWT_NS_ROUTE);
 app.use(ENDPOINT, authRoute);
 app.use(ENDPOINT, auth.authenticate(), testAWT_ROUTE);
+app.use(ENDPOINT + USER_PLAYLIST_ENDPOINT, playlistRoute);
 
 app.listen(port, () => console.log(`Listen to port ${port}`));
 
