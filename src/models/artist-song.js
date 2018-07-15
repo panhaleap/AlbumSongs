@@ -12,6 +12,3 @@ export const ArtistSongs = sequelize.define('artistSongs', {
 Artists.belongsToMany(Songs, { through: ArtistSongs });
 Songs.belongsToMany(Artists, { through: ArtistSongs });
 
-
-// ArtistSongs.belongsTo(Songs);
-// ArtistSongs.belongsTo(Artists);

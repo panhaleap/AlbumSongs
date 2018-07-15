@@ -16,20 +16,20 @@ import albumRoute from './api/admin/album/album.route';
 import categoryRoute from './api/admin/category/category.route';
 import artistRoute from './api/admin/artist/artist.route';
 import songRoute from './api/admin/song/song.route';
-import artistSongRoute from './api/admin/artist_song/artist_song.route';
+import artistSongRoute from './api/admin/artist-song/artist-song.route';
 import artistRoutePublic from './api/artist/artist.route';
 import songRoutePublic from './api/song/song.route';
 import productionsRoutePublic from './api/production/production.route';
 //const passportConf = require('./passport');
 const auth = require('./auth.js')();
-const passport = require('passport');
+//const passport = require('passport');
 
 //Test AWT
 import authRoute from './api/auth/auth.route';
 import testAWT_ROUTE from './testAWT.route';
-import testAWT_NS_ROUTE from './testAWT_noSecret.route';
+import testAWT_NS_ROUTE from './testAWT-noSecret.route';
 
-const { sequelize } = require('./sequelize-connection');
+//const { sequelize } = require('./sequelize-connection');
 
 // console.clear();
 // console.log('auth: ', auth);

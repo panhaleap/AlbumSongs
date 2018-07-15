@@ -1,16 +1,25 @@
 import { Songs } from '../../../models/song';
 import { succeed } from '../../../common/response';
-import { getLimit, getOffset } from '../../../common/query_condition';
+import { getLimit, getOffset } from '../../../common/metadata-of-query';
 import Sequelize from 'sequelize';
+import { ArtistSongs } from '../../../models/artist-song';
+import { Artists } from '../../../models/artist';
 const Op = Sequelize.Op;
 
 export const createSong = async (req, res) => {
-  const { name, duration, size, album_id, category_id } = req.body;
-  const song = new Songs({ name, duration, size, album_id, category_id });
-  const result = await song.save();
-  succeed(res, result, 200);
+  const { name, duration, size, album_id, category_id, artistId } = req.body;
+  const newSong = await Songs.create({ name, duration, size, album_id, category_id });
+
+  //const result = await Songs.findAll({where: {id: newSong.id}});
+  await ArtistSongs.create({ songId: newSong.id, artistId});
+  const result = await Songs.findOne({where: {id: newSong.id}, include: [{ model: Artists}]});
+
+  //const result = await Songs.findOne({where: {id: newSong.id}},{ include: [{attributes: ['id'], model: Artists}] });
+  // await Songs.create({ name, duration, size, album_id, category_id, artists: [{ id: 2 }] });
+
+  succeed(res, {data: result}, 200);
   //
-  
+
   // Songs.create(survey, {
   //   include: [
   //     {
@@ -43,14 +52,16 @@ export const getSongById = async (req, res) => {
 };
 
 export const updateSongById = async (req, res) => {
-  const data = req.body;
+  const { name, duration, size, album_id, category_id, artistId } = req.body;
   const { id } = req.params;
-  await Songs.update(data, { where: { id, status: 'active' } });
+  await Songs.update({ name, duration, size, album_id, category_id }, { where: { id, status: 'active' } });
+  await ArtistSongs.update({ artistId }, { where: { songId: id } });
   succeed(res, { message: 'Updated Success' }, 200);
 };
 
 export const deleteSongById = async (req, res) => {
   const { id } = req.params;
   await Songs.update({ status: 'inactive' }, { where: { id, status: 'active' } });
+  await ArtistSongs.update({ status: 'inactive' }, { where: { songId: id } });
   succeed(res, { message: 'Deleted Success' }, 200);
 };

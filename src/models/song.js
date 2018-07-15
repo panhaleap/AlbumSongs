@@ -1,5 +1,5 @@
 const { sequelize } = require('../sequelize-connection');
-import { ArtistSongs } from '../models/artist-song';
+//import { ArtistSongs } from '../models/artist-song';
 import Sequelize from 'sequelize';
 
 export const Songs = sequelize.define('song', {

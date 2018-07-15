@@ -5,7 +5,7 @@ import {
   getArtistSongByArtistIdSongId,
   updateArtistSongByArtistIdSongId,
   deleteArtistSongByArtistIdSongId
-} from './artist_song.api';
+} from './artist-song.api';
 
 const artistSongRoute = Router();
 
