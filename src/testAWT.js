@@ -44,7 +44,7 @@ export const signUp = async (req, res, next) => {
   }
 };
 
-export const secret = async (req, res) => {
+export const secret1 = async (req, res) => {
   console.log('secret  req: ', req.user);
 
   /*
@@ -88,4 +88,11 @@ https://www.sitepoint.com/using-json-web-tokens-node-js/
   return res.json(id);
 
   // return res.json('Hellllllllllll');
+};
+
+export const secret = async (req, res) => {
+  console.log('secret  req: ', req.user);
+
+
+  return res.json( req.user );
 };
