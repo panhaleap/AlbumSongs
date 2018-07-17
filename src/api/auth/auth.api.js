@@ -12,8 +12,8 @@ import { Users } from '../../models/user';
 const singToken = user => {
   return jwt.encode(
     {
-      iss: 'CodeWorkr',
-      sub: user.id,
+      iss: 'User Authentication',
+      sub: user,
       iat: new Date().getTime(), //Current Time
       exp: new Date().setDate(new Date().getDate() + 1) //Current time + 1 day ahead
     },
@@ -37,6 +37,7 @@ export const postSignIn = async (req, res) => {
       var token = singToken(user);
 
       return res.json({
+        userInfo: user,
         token: token
       });
     }
@@ -48,15 +49,12 @@ export const postSignIn = async (req, res) => {
 export const postSignUp = async (req, res) => {
   try {
     const { email, username, password } = req.body;
-    //return res.json(email);
     const userEmailExist = await Users.findOne({ where: { [Op.or]: [{ email }, { username }] } });
 
-    //return res.json(userEmailExist);
     if (userEmailExist) {
       return failed(res, 'Username or Email, already in use', 400);
     }
     const newUser = await Users.create({ username, email, password }, { raw: true });
-    //await newUser.save();
 
     const token = singToken(newUser);
 

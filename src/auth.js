@@ -3,9 +3,6 @@ const passportJWT = require('passport-jwt');
 const ExtractJwt = passportJWT.ExtractJwt;
 const Strategy = passportJWT.Strategy;
 
-import Sequelize from 'sequelize';
-import { Users } from './models/user';
-
 /**
  * Using for check all routers has auth.authenticate()
  *
@@ -22,12 +19,14 @@ module.exports = function() {
     },
     async (payload, done) => {
       console.log('payload: ', payload);
-      var id = payload.sub;
-      var user = await Users.findById(id); //Users.findOne({ where: { id } });
+      var user = payload.sub;
+
       if (user) {
-        return done(null, {
-          id: user.id
-        });
+        if (payload.exp <= Date.now()) {
+          return done(null, false, { message: 'Expired Token' });
+        } else {
+          return done(null, { userInfo: user });
+        }
       } else {
         return done(new Error('User not found'), null);
       }

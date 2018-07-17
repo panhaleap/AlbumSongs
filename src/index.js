@@ -21,20 +21,13 @@ import artistSongRoute from './api/admin/artist-song/artist-song.route';
 import artistRoutePublic from './api/artist/artist.route';
 import songRoutePublic from './api/song/song.route';
 import productionsRoutePublic from './api/production/production.route';
-//const passportConf = require('./passport');
 const auth = require('./auth.js')();
-//const passport = require('passport');
 
 //Test AWT
 import authRoute from './api/auth/auth.route';
 import testAWT_ROUTE from './testAWT.route';
 import testAWT_NS_ROUTE from './testAWT-noSecret.route';
 import playlistRoute from './api/playlist/playlist.route';
-
-//const { sequelize } = require('./sequelize-connection');
-
-// console.clear();
-// console.log('auth: ', auth);
 
 const app = expresses();
 const port = process.env.port || 8080;

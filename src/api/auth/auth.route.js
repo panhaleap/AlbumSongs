@@ -5,9 +5,6 @@ const authRoute = Router();
 
 authRoute.post('/sign-in', postSignIn);
 authRoute.post('/sign-up', postSignUp);
-// authRoute.get('/sign-out', getSingOut);
+//authRoute.get('/sign-out', getSingOut);
 
 export default authRoute;
-
-
-

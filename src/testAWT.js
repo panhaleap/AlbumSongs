@@ -1,7 +1,6 @@
 import JWT from 'jsonwebtoken';
 import { Users } from './models/user';
 import { succeed, failed } from './common/response';
-import { Productions } from './models/production';
 const { JWT_SECRET } = process.env;
 import Sequelize from 'sequelize';
 import { Songs } from './models/song';
@@ -92,7 +91,5 @@ https://www.sitepoint.com/using-json-web-tokens-node-js/
 
 export const secret = async (req, res) => {
   console.log('secret  req: ', req.user);
-
-
   return res.json( req.user );
 };
