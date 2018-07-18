@@ -23,10 +23,10 @@ import songRoutePublic from './api/song/song.route';
 import productionsRoutePublic from './api/production/production.route';
 const auth = require('./auth.js')();
 const app = expresses();
-const http = require("http").Server(app);
-const socket = require("socket.io")(http);
-import Routes from './utils/routes'; 
-import Config from './utils/config'; 
+const http = require('http').Server(app);
+const socket = require('socket.io')(http);
+import Routes from './utils/routes';
+import Config from './utils/config';
 
 //Test AWT
 import authRoute from './api/auth/auth.route';
@@ -39,7 +39,7 @@ const port = process.env.port || 8080;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 new Config(app);
-new Routes(app,socket).routesConfig();
+new Routes(app, socket, auth.authenticate()).routesConfig();
 app.use(logger('dev'));
 
 // Initialize Passport
@@ -61,8 +61,8 @@ app.use(ENDPOINT, artistRoutePublic);
 app.use(ENDPOINT, songRoutePublic);
 app.use(ENDPOINT, productionsRoutePublic);
 app.use(ENDPOINT, testAWT_NS_ROUTE);
-app.use(ENDPOINT, authRoute);
 app.use(ENDPOINT, auth.authenticate(), testAWT_ROUTE);
+app.use(ENDPOINT, authRoute);
 app.use(ENDPOINT + USER_PLAYLIST_ENDPOINT, playlistRoute);
 
 // app.listen(port, () => console.log(`Listen to port ${port}`));

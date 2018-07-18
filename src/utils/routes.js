@@ -1,9 +1,15 @@
 'use strict';
 
 class Routes {
-  constructor(app, socket) {
+  constructor(app, socket, auth) {
     this.app = app;
     this.io = socket;
+    this.auth = auth;
+
+    /*
+      UserInfo stores object of logged in user
+     */
+    this.userInfo = {};
 
     /* 
 			Array to store the list of users along with there respective socket id.
@@ -12,8 +18,12 @@ class Routes {
   }
 
   appRoutes() {
-    this.app.get('/', (request, response) => {
+    // this.app.get('/chat', (request, response) => {
+    //   response.render('html');
+    // });
+    this.app.use('', this.auth, (request, response) => {
       response.render('html');
+      this.userInfo = request.user;
     });
   }
 
@@ -21,8 +31,9 @@ class Routes {
     this.io.on('connection', socket => {
       socket.on('username', userName => {
         this.users.push({
-          id: socket.id,
-          userName: userName
+          id: this.userInfo.id,
+          userName: this.userInfo.userName,
+          role: this.userInfo.role
         });
 
         let len = this.users.length;
@@ -32,7 +43,8 @@ class Routes {
       });
 
       socket.on('getMsg', data => {
-        socket.broadcast.to(data.toid).emit('sendMsg', {
+          socket.broadcast.to(data.toid).emit('sendMsg', {
+          //socket.connected[ socket.id ].emit('sendMsg', {
           msg: data.msg,
           name: data.name
         });

@@ -24,6 +24,7 @@ const singToken = user => {
 export const postSignIn = async (req, res) => {
   const { email, username, password } = req.body;
 
+  console.log('\n>>>>>>>>><<*******************************************<<<<<<<<<< ', req.body);
   if ((email || username) && password) {
     var user = null;
 
