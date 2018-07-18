@@ -22,6 +22,11 @@ import artistRoutePublic from './api/artist/artist.route';
 import songRoutePublic from './api/song/song.route';
 import productionsRoutePublic from './api/production/production.route';
 const auth = require('./auth.js')();
+const app = expresses();
+const http = require("http").Server(app);
+const socket = require("socket.io")(http);
+import Routes from './utils/routes'; 
+import Config from './utils/config'; 
 
 //Test AWT
 import authRoute from './api/auth/auth.route';
@@ -29,11 +34,12 @@ import testAWT_ROUTE from './testAWT.route';
 import testAWT_NS_ROUTE from './testAWT-noSecret.route';
 import playlistRoute from './api/playlist/playlist.route';
 
-const app = expresses();
 const port = process.env.port || 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+new Config(app);
+new Routes(app,socket).routesConfig();
 app.use(logger('dev'));
 
 // Initialize Passport
@@ -59,6 +65,8 @@ app.use(ENDPOINT, authRoute);
 app.use(ENDPOINT, auth.authenticate(), testAWT_ROUTE);
 app.use(ENDPOINT + USER_PLAYLIST_ENDPOINT, playlistRoute);
 
-app.listen(port, () => console.log(`Listen to port ${port}`));
+// app.listen(port, () => console.log(`Listen to port ${port}`));
+
+http.listen(port, () => console.log(`Listen to port ${port}`));
 
 //sequelize.sync();
