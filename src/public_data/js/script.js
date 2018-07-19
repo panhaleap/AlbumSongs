@@ -47,7 +47,7 @@ app.controller('app', ($scope, socket) => {
 
     if (keyCode === 13 && $scope.message !== null) {
       socket.emit('getMsg', {
-        toId: '123',
+        toId: $scope.selectedUser,
         msg: $scope.message,
         name: $scope.username
       });
@@ -57,13 +57,12 @@ app.controller('app', ($scope, socket) => {
 
   socket.emit('username', $scope.username);
 
- 
-
-  socket.on('userList', (userList, userId, socketId) => {
+  socket.on('userList', (userList, userId, userName) => {
     if ($scope.userId === null) {
       $scope.userId = userId;
-
+      $scope.username = userName;
     }
+
     $scope.userList = userList;
   });
 
@@ -75,4 +74,6 @@ app.controller('app', ($scope, socket) => {
     console.log('he looo', data);
     $scope.messages.push(data);
   });
+
+  
 });

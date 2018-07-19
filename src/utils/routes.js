@@ -26,36 +26,56 @@ class Routes {
 
   socketEvents() {
     this.io.on('connection', socket => {
-      console.log('socket====', socket.handshake.query.token);
-      socket.join(socket.handshake.query.token);
+      console.log('socket====', this.userInfo.id);
+      socket.join(this.userInfo.id);
       socket.on('username', userName => {
         const user = {
           id: this.userInfo.id,
           userName: this.userInfo.username,
-          role: this.userInfo.role,
-          socketId: socket.id
+          role: this.userInfo.role
         };
 
         if (!this.users.inArray(user)) this.users.push(user);
-        this.io.emit('userList', this.users, this.userInfo.id, user.socketId);
+        //
+        // const things = new Object();
+
+        // things.thing = new Array();
+
+        // things.thing.push({ place: 'here', name: 'stuff' });
+        // things.thing.push({ place: 'there', name: 'morestuff' });
+        // things.thing.push({ place: 'there', name: 'morestuff' });
+
+        // const obj = {};
+
+        // for (var i = 0, len = this.users.length; i < len; i++) obj[this.users[i]['place']] = this.users[i];
+
+        // this.users = new Array();
+        // for (var key in obj) this.users.push(obj[key]);
+        //console.log('>>>>>>>>>>>>>><<<<<<<<<<< ',this.users);
+        // const testUserlist = [ { id: 13,
+        //   userName: 'vy',
+        //   role: 'user' },
+        // { id: 11,
+        //   userName: 'ryri',
+        //   role: 'user'},
+        // { id: 16,
+        //   userName: 'rath',
+        //   role: 'user'},
+        // { id: 13,
+        //   userName: 'vy',
+        //   role: 'user'} ];
+        console.log('>>>>>>>>>>>>>>HHHH<<<<<<<<<<< ',new Set(this.users).toJSON());
+        //
+        this.io.emit('userList', this.users, user.id, user.userName);
       });
 
       socket.on('getMsg', data => {
         console.log('test getMsg', data);
 
-        // socket.broadcast.to('abc').emit('sendMsg', {
-        //   msg: data.msg,
-        //   name: data.name
-        // });
-
-        // this.io.sockets.emit('sendMsg',  {
-        //   msg: data.msg,
-        //   name: data.name
-        // });
-
-        socket.broadcast.to('abc').emit('sendMsg', {
+        socket.broadcast.to(data.toId).emit('sendMsg', {
           msg: data.msg,
-          name: data.name
+          name: data.name,
+          fromUserId: this.userInfo.id
         });
 
         socket.emit('sendMsg', {
