@@ -29,16 +29,16 @@ export const postSignIn = async (req, res) => {
     var user = null;
 
     if (email) {
-      user = await Users.findOne({ where: { email } });
+      user = await Users.findOne({raw: true, where: { email } });
     } else if (username) {
-      user = await Users.findOne({ where: { username } });
+      user = await Users.findOne({raw: true, where: { username } });
     }
 
     if (user && bcrypt.compareSync(password, user.password)) {
       var token = singToken(user);
 
       return res.json({
-        userInfo: user,
+        ...user,
         token: token
       });
     }

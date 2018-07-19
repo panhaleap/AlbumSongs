@@ -21,7 +21,7 @@ class Routes {
     // this.app.get('/chat', (request, response) => {
     //   response.render('html');
     // });
-    this.app.use('', this.auth, (request, response) => {
+    this.app.use('/chat', this.auth, (request, response) => {
       response.render('html');
       this.userInfo = request.user;
     });
@@ -31,8 +31,8 @@ class Routes {
     this.io.on('connection', socket => {
       socket.on('username', userName => {
         this.users.push({
-          id: this.userInfo.id,
-          userName: this.userInfo.userName,
+          id: socket.id,
+          userName: this.userInfo.username,
           role: this.userInfo.role
         });
 

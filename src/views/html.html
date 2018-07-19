@@ -12,7 +12,7 @@
                 <ul class="list-group">
                     <li class="list-group-item" 
                         ng-repeat="user in userList"
-                        ng-if="user.role === 'admin'"
+                        ng-if="user.role !== 'admin'"
                         ng-class="{ 'active' : user.id == selectedUser}"
                         ng-click = seletedUser(user.id);
                         ng-style="{

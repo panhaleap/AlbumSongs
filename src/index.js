@@ -39,7 +39,6 @@ const port = process.env.port || 8080;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 new Config(app);
-new Routes(app, socket, auth.authenticate()).routesConfig();
 app.use(logger('dev'));
 
 // Initialize Passport
@@ -51,6 +50,7 @@ app.all('/*', function(req, res, next) {
   next();
 });
 
+app.use(ENDPOINT, authRoute);
 app.use(ENDPOINT + ADMIN_PRODUCTION_ENDPOINT, productionRoute);
 app.use(ENDPOINT + ADMIN_ALBUM_ENDPOINT, albumRoute);
 app.use(ENDPOINT + ADMIN_CATEGORIES_ENDPOINT, categoryRoute);
@@ -61,10 +61,9 @@ app.use(ENDPOINT, artistRoutePublic);
 app.use(ENDPOINT, songRoutePublic);
 app.use(ENDPOINT, productionsRoutePublic);
 app.use(ENDPOINT, testAWT_NS_ROUTE);
-app.use(ENDPOINT, auth.authenticate(), testAWT_ROUTE);
-app.use(ENDPOINT, authRoute);
 app.use(ENDPOINT + USER_PLAYLIST_ENDPOINT, playlistRoute);
-
+app.use(ENDPOINT, auth.authenticate(), testAWT_ROUTE);
+new Routes(app, socket, auth.authenticate()).routesConfig();
 // app.listen(port, () => console.log(`Listen to port ${port}`));
 
 http.listen(port, () => console.log(`Listen to port ${port}`));
