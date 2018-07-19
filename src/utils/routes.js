@@ -36,36 +36,12 @@ class Routes {
         };
 
         if (!this.users.inArray(user)) this.users.push(user);
-        //
-        // const things = new Object();
 
-        // things.thing = new Array();
+        /*
+          Remove duplicates Users object
+        */
+        new Set(this.users).toJSON();
 
-        // things.thing.push({ place: 'here', name: 'stuff' });
-        // things.thing.push({ place: 'there', name: 'morestuff' });
-        // things.thing.push({ place: 'there', name: 'morestuff' });
-
-        // const obj = {};
-
-        // for (var i = 0, len = this.users.length; i < len; i++) obj[this.users[i]['place']] = this.users[i];
-
-        // this.users = new Array();
-        // for (var key in obj) this.users.push(obj[key]);
-        //console.log('>>>>>>>>>>>>>><<<<<<<<<<< ',this.users);
-        // const testUserlist = [ { id: 13,
-        //   userName: 'vy',
-        //   role: 'user' },
-        // { id: 11,
-        //   userName: 'ryri',
-        //   role: 'user'},
-        // { id: 16,
-        //   userName: 'rath',
-        //   role: 'user'},
-        // { id: 13,
-        //   userName: 'vy',
-        //   role: 'user'} ];
-        console.log('>>>>>>>>>>>>>>HHHH<<<<<<<<<<< ',new Set(this.users).toJSON());
-        //
         this.io.emit('userList', this.users, user.id, user.userName);
       });
 
