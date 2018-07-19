@@ -75,7 +75,7 @@ class Routes {
         socket.broadcast.to(data.toId).emit('sendMsg', {
           msg: data.msg,
           name: data.name,
-          fromUserId: this.userInfo.id
+          fromUserId:  data.fromUserId
         });
 
         socket.emit('sendMsg', {

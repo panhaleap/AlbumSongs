@@ -49,7 +49,8 @@ app.controller('app', ($scope, socket) => {
       socket.emit('getMsg', {
         toId: $scope.selectedUser,
         msg: $scope.message,
-        name: $scope.username
+        name: $scope.username,
+        fromUserId: $scope.userId
       });
       $scope.message = null;
     }
@@ -75,5 +76,5 @@ app.controller('app', ($scope, socket) => {
     $scope.messages.push(data);
   });
 
-  
+
 });
