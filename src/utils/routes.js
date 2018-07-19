@@ -51,12 +51,13 @@ class Routes {
         socket.broadcast.to(data.toId).emit('sendMsg', {
           msg: data.msg,
           name: data.name,
-          fromUserId:  data.fromUserId
+          fromUserId: data.fromUserId
         });
 
         socket.emit('sendMsg', {
           msg: data.msg,
-          name: data.name
+          name: data.name,
+          fromUserId: data.fromUserId
         });
       });
 

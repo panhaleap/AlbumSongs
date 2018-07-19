@@ -50,7 +50,7 @@ app.controller('app', ($scope, socket) => {
         toId: $scope.selectedUser,
         msg: $scope.message,
         name: $scope.username,
-        fromUserId: $scope.userId
+        fromUserId: $scope.fromUserId
       });
       $scope.message = null;
     }
@@ -62,6 +62,7 @@ app.controller('app', ($scope, socket) => {
     if ($scope.userId === null) {
       $scope.userId = userId;
       $scope.username = userName;
+      $scope.fromUserId = userId;
     }
 
     $scope.userList = userList;
