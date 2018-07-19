@@ -6,7 +6,9 @@ const app = angular.module('app', []);
     Making factory method for socket 
 */
 app.factory('socket', function($rootScope) {
-  const socket = io.connect();
+  const socket = io('http://localhost:8080?token=abc',{
+    reconnection: true
+  });
   return {
     on: function(eventName, callback) {
       socket.on(eventName, function() {
@@ -30,19 +32,14 @@ app.factory('socket', function($rootScope) {
 });
 
 app.controller('app', ($scope, socket) => {
-  $scope.socketId = null;
+  $scope.userId = null;
   $scope.selectedUser = null;
   $scope.messages = [];
   $scope.msgData = null;
   $scope.userList = [];
 
-  $scope.username = window.prompt('Enter Your Name');
-  if ($scope.username === '') {
-    window.location.reload();
-  }
-
   $scope.seletedUser = selectedUser => {
-    selectedUser === $scope.socketId ? alert("Can't message to yourself.") : ($scope.selectedUser = selectedUser);
+    selectedUser === $scope.userId ? alert("Can't message to yourself.") : ($scope.selectedUser = selectedUser);
   };
 
   $scope.sendMsg = $event => {
@@ -50,7 +47,7 @@ app.controller('app', ($scope, socket) => {
 
     if (keyCode === 13 && $scope.message !== null) {
       socket.emit('getMsg', {
-        toid: $scope.selectedUser,
+        toId: '123',
         msg: $scope.message,
         name: $scope.username
       });
@@ -60,9 +57,12 @@ app.controller('app', ($scope, socket) => {
 
   socket.emit('username', $scope.username);
 
-  socket.on('userList', (userList, socketId) => {
-    if ($scope.socketId === null) {
-      $scope.socketId = socketId;
+ 
+
+  socket.on('userList', (userList, userId, socketId) => {
+    if ($scope.userId === null) {
+      $scope.userId = userId;
+
     }
     $scope.userList = userList;
   });
@@ -72,6 +72,7 @@ app.controller('app', ($scope, socket) => {
   });
 
   socket.on('sendMsg', data => {
+    console.log('he looo', data);
     $scope.messages.push(data);
   });
 });

@@ -18,9 +18,6 @@ class Routes {
   }
 
   appRoutes() {
-    // this.app.get('/chat', (request, response) => {
-    //   response.render('html');
-    // });
     this.app.use('/chat', this.auth, (request, response) => {
       response.render('html');
       this.userInfo = request.user;
@@ -29,22 +26,39 @@ class Routes {
 
   socketEvents() {
     this.io.on('connection', socket => {
+      console.log('socket====', socket.handshake.query.token);
+      socket.join(socket.handshake.query.token);
       socket.on('username', userName => {
-        this.users.push({
-          id: socket.id,
+        const user = {
+          id: this.userInfo.id,
           userName: this.userInfo.username,
-          role: this.userInfo.role
-        });
+          role: this.userInfo.role,
+          socketId: socket.id
+        };
 
-        let len = this.users.length;
-        len--;
-
-        this.io.emit('userList', this.users, this.users[len].id);
+        if (!this.users.inArray(user)) this.users.push(user);
+        this.io.emit('userList', this.users, this.userInfo.id, user.socketId);
       });
 
       socket.on('getMsg', data => {
-          socket.broadcast.to(data.toid).emit('sendMsg', {
-          //socket.connected[ socket.id ].emit('sendMsg', {
+        console.log('test getMsg', data);
+
+        // socket.broadcast.to('abc').emit('sendMsg', {
+        //   msg: data.msg,
+        //   name: data.name
+        // });
+
+        // this.io.sockets.emit('sendMsg',  {
+        //   msg: data.msg,
+        //   name: data.name
+        // });
+
+        socket.broadcast.to('abc').emit('sendMsg', {
+          msg: data.msg,
+          name: data.name
+        });
+
+        socket.emit('sendMsg', {
           msg: data.msg,
           name: data.name
         });
@@ -66,4 +80,51 @@ class Routes {
     this.socketEvents();
   }
 }
+
+/*
+ * @function
+ * @name Object.prototype.inArray
+ * @description Extend Object prototype within inArray function
+ *
+ * @param {mix}    needle       - Search-able needle
+ * @param {bool}   searchInKey  - Search needle in keys?
+ *
+ */
+Object.defineProperty(Object.prototype, 'inArray', {
+  value: function(needle, searchInKey) {
+    var object = this;
+
+    if (
+      Object.prototype.toString.call(needle) === '[object Object]' ||
+      Object.prototype.toString.call(needle) === '[object Array]'
+    ) {
+      needle = JSON.stringify(needle);
+    }
+
+    return Object.keys(object).some(function(key) {
+      var value = object[key];
+
+      if (
+        Object.prototype.toString.call(value) === '[object Object]' ||
+        Object.prototype.toString.call(value) === '[object Array]'
+      ) {
+        value = JSON.stringify(value);
+      }
+
+      if (searchInKey) {
+        if (value === needle || key === needle) {
+          return true;
+        }
+      } else {
+        if (value === needle) {
+          return true;
+        }
+      }
+    });
+  },
+  writable: true,
+  configurable: true,
+  enumerable: false
+});
+
 module.exports = Routes;
