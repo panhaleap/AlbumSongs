@@ -1,52 +1,54 @@
-<html ng-app="app"  ng-controller="app">
-    <head>
-        <title>Sending message to specific client</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 user-list">
+<html ng-app="app" ng-controller="app">
+
+<head>
+    <title>Sending message to specific client</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 user-list">
                 <h2>List of Users</h2>
+                <div>
+                        <ng-view></ng-view>
+                    </div>
                 <ul class="list-group">
-                    <li class="list-group-item" 
-                        ng-repeat="user in userList"
-                        ng-if="user.role !== 'admin'"
-                        ng-class="{ 'active' : user.id == selectedUser}"
-                        ng-click = seletedUser(user.id);
-                        ng-style="{
+                    <li class="list-group-item" ng-repeat="user in userList" ng-if="user.role !== 'admin'" ng-class="{ 'active' : user.id == selectedUser}"
+                        ng-click=s eletedUser(user.id); ng-style="{
                             'cursor': user.id === userId ? 'not-allowed' :'pointer'
-                        }"
-                        >
-                        <span id='{{user.id}}' >{{ user.id === userId ? 'You are ' + user.userName : user.userName }}</span>
+                        }">
+                        <span id='{{user.id}}'>{{ user.id === userId ? 'You are ' + user.userName : user.userName }}</span>
                     </li>
                 </ul>
-                    
+
+            </div>
+            <div class="col-md-8 message-box">
+                <h2>Messages sent by users</h2>
+                <div class="message-container">
+                    <ul class="list-group">
+                        <li class="list-group-item" 
+                        ng-repeat="message in messages"
+                        >
+                            {{ message.fromUserId === userId ? 'You' : message.name }} says: {{ message.msg }}
+                        </li>
+                    </ul>
+                    <div class="alert alert-warning" ng-show='messages.length == 0'>
+                        No messages for you.
+                    </div>
                 </div>
-                <div class="col-md-8 message-box">
-                    <h2>Messages sent by users</h2>
-                    <div class="message-container">
-                        <ul class="list-group">
-                            <li class="list-group-item" 
-                                ng-repeat="message in messages"
-                                >
-                                {{ message.fromUserId === userId ? 'You' : message.name }} says: {{ message.msg }}
-                            </li>
-                        </ul>
-                        <div class="alert alert-warning" ng-show='messages.length == 0'>
-                            No messages for you.
-                        </div>
-                    </div>
-                    <div class="message-sender">
-                        <textarea class="form-control" ng-model='message' ng-keypress="sendMsg($event)"></textarea>
-                    </div>
+                <div class="message-sender">
+                    <textarea class="form-control" ng-model='message' ng-keypress="sendMsg($event)"></textarea>
                 </div>
             </div>
         </div>
-    </body> 
-    
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="js/angular.min.js"></script>
-    <script src="js/script.js"></script>
+    </div>
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/script.js"></script>
+<script type="text/javascript" src="js/angular-route.js"></script>
+
 </html>

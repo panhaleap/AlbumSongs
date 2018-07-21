@@ -1,6 +1,6 @@
 'use strict';
 
-const app = angular.module('app', []);
+const app = angular.module('app', ['ngRoute']);
 
 /* 
     Making factory method for socket 
@@ -31,12 +31,29 @@ app.factory('socket', function($rootScope) {
   };
 });
 
+app.config(function($routeProvider) {
+	$routeProvider
+		.when('/home', {
+			templateUrl: 'js/home.html',
+			controller: 'StudentController'
+		})
+		.when('/viewStudents', {
+			templateUrl: 'js/viewStudents.html',
+			controller: 'StudentController'
+		})
+		.otherwise({
+			redirectTo: '/home'
+		});
+});
+
 app.controller('app', ($scope, socket) => {
   $scope.userId = null;
   $scope.selectedUser = null;
   $scope.messages = [];
   $scope.msgData = null;
   $scope.userList = [];
+  // $scope.technology = 'this is the tech page';
+  // $scope.task = 'this is the task';
 
   $scope.seletedUser = selectedUser => {
     selectedUser === $scope.userId ? alert("Can't message to yourself.") : ($scope.selectedUser = selectedUser);
