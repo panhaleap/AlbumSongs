@@ -83,12 +83,7 @@ class Routes {
           socket.room = roomName;
 
           const clients = this.io.sockets.adapter.rooms[roomName];
-          //console.log('Clients in room '+ roomName +' ' + clients);
-
           console.log('^^^^^^^&  ', this.io.sockets.adapter.rooms[roomName].length, ' @@@@');
-          for (let clientId in clients) {
-            // console.log('>>>>>>>> +++++++++=========== ', Object.toJSON(this.io.sockets.connected[clientId]));
-          }
         }
       });
 
@@ -99,6 +94,31 @@ class Routes {
         console.log(data.username + ' left room ', socket.room);
         socket.leave(socket.room);
         socket.room = null;
+      });
+
+      socket.on('getInvitedUsers', data => {
+        if (socket.room) {
+          const invitedUsers = data.invitedUsers;
+          const invitedBy = data.invitedBy;
+          console.log(
+            ' >>>>>>>>>>> Users Invitation: users id ',
+            invitedUsers,
+            'to Room Chat ',
+            socket.room,
+            ' by ',
+            invitedBy
+          );
+
+          /*
+            Notification to the room that this users has been invited to join the group chat by ...
+          */
+          this.io.sockets.in(socket.room).emit('sendMsg', {
+            msg: data.msg,
+            name: data.name,
+            fromUserId: data.fromUserId
+          });
+        }
+        
       });
 
       socket.on('disconnect', () => {

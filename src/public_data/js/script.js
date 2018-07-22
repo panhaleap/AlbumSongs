@@ -59,18 +59,21 @@ app.controller('app', ($scope, socket) => {
   $scope.userNameEntereds = [];
   $scope.showListUser = true;
   $scope.invitedUsers = [];
-  // $scope.chatRoom = 'Funny';
-  // $scope.technology = 'this is the tech page';
-  // $scope.task = 'this is the task';
+
   $scope.inviteToRoom = () => {
     $scope.showListUser = false;
     console.log($scope.showListUser);
   };
 
-  $scope.selectedUserToRoom = (selectedUsers) => {
+  $scope.getSelectedUsersToRoom = (selectedUsers) => {
     $scope.showListUser = true;
     $scope.invitedUsers = selectedUsers;
     console.log($scope.showListUser, '>>>>>>>> Selected user '+ $scope.invitedUsers);
+
+    socket.emit('getInvitedUsers', {
+      invitedUsers: $scope.invitedUsers,
+      invitedBy: $scope.username
+    });
   };
 
   $scope.seletedUser = selectedUser => {
