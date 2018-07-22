@@ -12,6 +12,7 @@ class Config{
 
 		//Files
 		app.use(require('express').static(__dirname + '/../public_data'));
+		app.use(require('express').static(__dirname + '/../views'));
 
 	}
 }

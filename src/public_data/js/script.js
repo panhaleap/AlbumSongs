@@ -6,7 +6,7 @@ const app = angular.module('app', ['ngRoute']);
     Making factory method for socket 
 */
 app.factory('socket', function($rootScope) {
-  const socket = io('http://localhost:8080?token=abc',{
+  const socket = io('http://localhost:8080?token=abc', {
     reconnection: true
   });
   return {
@@ -32,18 +32,18 @@ app.factory('socket', function($rootScope) {
 });
 
 app.config(function($routeProvider) {
-	$routeProvider
-		.when('/home', {
-			templateUrl: 'js/home.html',
-			controller: 'StudentController'
-		})
-		.when('/viewStudents', {
-			templateUrl: 'js/viewStudents.html',
-			controller: 'StudentController'
-		})
-		.otherwise({
-			redirectTo: '/home'
-		});
+  $routeProvider
+    .when('/home', {
+      templateUrl: 'group-chat.html',
+      controller: 'app'
+    })
+    .when('/viewGroupChats', {
+      templateUrl: 'viewGroupChats.html',
+      controller: 'app'
+    })
+    .otherwise({
+      redirectTo: '/home'
+    });
 });
 
 app.controller('app', ($scope, socket) => {
@@ -52,6 +52,8 @@ app.controller('app', ($scope, socket) => {
   $scope.messages = [];
   $scope.msgData = null;
   $scope.userList = [];
+  $scope.userNameEntereds = [];
+  // $scope.chatRoom = 'Funny';
   // $scope.technology = 'this is the tech page';
   // $scope.task = 'this is the task';
 
@@ -59,15 +61,27 @@ app.controller('app', ($scope, socket) => {
     selectedUser === $scope.userId ? alert("Can't message to yourself.") : ($scope.selectedUser = selectedUser);
   };
 
-  $scope.sendMsg = $event => {
+  $scope.startChatRoom = $event => {
     const keyCode = $event.which || $event.keyCode;
 
+    if (keyCode === 13 && $scope.roomName !== null) {
+      socket.emit('getRoomName', {
+        username: $scope.username,
+        fromUserId: $scope.fromUserId,
+        roomName: $scope.chatRoom
+      });
+    }
+  };
+
+  $scope.sendMsg = $event => {
+    const keyCode = $event.which || $event.keyCode;
     if (keyCode === 13 && $scope.message !== null) {
       socket.emit('getMsg', {
         toId: $scope.selectedUser,
         msg: $scope.message,
         name: $scope.username,
-        fromUserId: $scope.fromUserId
+        fromUserId: $scope.fromUserId,
+        roomName: $scope.chatRoom
       });
       $scope.message = null;
     }
@@ -90,9 +104,12 @@ app.controller('app', ($scope, socket) => {
   });
 
   socket.on('sendMsg', data => {
-    console.log('he looo', data);
     $scope.messages.push(data);
   });
 
-
+  socket.on('user_entered', data => {
+    $scope.userNameEntereds.push(data);
+    $scope.chatRoom = data.roomName;
+  });
+  
 });

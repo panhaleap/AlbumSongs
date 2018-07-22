@@ -54,11 +54,29 @@ class Routes {
           fromUserId: data.fromUserId
         });
 
-        socket.emit('sendMsg', {
-          msg: data.msg,
-          name: data.name,
-          fromUserId: data.fromUserId
-        });
+        // socket.emit('sendMsg', {
+        //   msg: data.msg,
+        //   name: data.name,
+        //   fromUserId: data.fromUserId
+        // });
+        if (data.roomName) {
+          this.io.sockets.in(data.roomName).emit('sendMsg', {
+            msg: data.msg,
+            name: data.name,
+            fromUserId: data.fromUserId
+          });
+        }
+      });
+
+      socket.on('getRoomName', data => {
+        console.log('test getRoomName ', data);
+        const roomName = data.roomName;
+
+        /*
+          Join Room
+        */
+        if (roomName) socket.join(roomName);
+        this.io.sockets.in(roomName).emit('user_entered', data);
       });
 
       socket.on('disconnect', () => {

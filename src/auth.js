@@ -22,11 +22,12 @@ module.exports = function() {
       var user = payload.sub;
 
       if (user) {
-        if (payload.exp <= Date.now()) {
-          return done(null, false, { message: 'Expired Token' });
-        } else {
-          return done(null, user);
-        }
+        // if (payload.exp <= Date.now()) {
+        //   return done(null, false, { message: 'Expired Token' });
+        // } else {
+        //   return done(null, user);
+        // }
+        return done(null, user);
       } else {
         return done(new Error('User not found'), null);
       }

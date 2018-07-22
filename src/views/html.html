@@ -12,11 +12,11 @@
             <div class="col-md-4 user-list">
                 <h2>List of Users</h2>
                 <div>
-                        <ng-view></ng-view>
-                    </div>
+                    <ng-view></ng-view>
+                </div>
                 <ul class="list-group">
                     <li class="list-group-item" ng-repeat="user in userList" ng-if="user.role !== 'admin'" ng-class="{ 'active' : user.id == selectedUser}"
-                        ng-click=s eletedUser(user.id); ng-style="{
+                        ng-click=seletedUser(user.id); ng-style="{
                             'cursor': user.id === userId ? 'not-allowed' :'pointer'
                         }">
                         <span id='{{user.id}}'>{{ user.id === userId ? 'You are ' + user.userName : user.userName }}</span>
@@ -28,9 +28,7 @@
                 <h2>Messages sent by users</h2>
                 <div class="message-container">
                     <ul class="list-group">
-                        <li class="list-group-item" 
-                        ng-repeat="message in messages"
-                        >
+                        <li class="list-group-item" ng-repeat="message in messages">
                             {{ message.fromUserId === userId ? 'You' : message.name }} says: {{ message.msg }}
                         </li>
                     </ul>
