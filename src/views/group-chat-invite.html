@@ -1,11 +1,21 @@
-
 <div class="container">
-	<a href="#/viewGroupChats"> Invite selected users to group chat</a>
+	<a href="#/viewGroupChats" ng-click="selectedUserToRoom(selectedUsers)"> Invite selected users to group chat</a>
 </div>
 
-<select multiple ng-model="xss" col-md-4 user-list style="width: 100%">
-	<option ng-selected="u.selected" ng-repeat="u in xs" value="{{u.value}}" class="list-group-item">
-	  {{u.value}}
-	</option>
-</select>
+<!-- <select multiple style="width: 100%" ng-model="invitedUsers">
+	<option value="">Select Users</option> -->
+<!-- <option ng-selected="user.selected" ng-repeat="user in userList" ng-if="user.id !== userId" value="{{ user.id }}" class="list-group-item">{{user.userName}}</option> -->
+<!-- <option ng-selected="user.selected" ng-repeat="user in userList" ng-if="user.id !== userId" value="{{ user.id }}" class="list-group-item"> -->
+<!-- <select type="text" ng-options="user.id as user.userName for user in userList track by user.id" ng-model="invitedUsers"> -->
 
+
+<!-- <button class="btn btn-info prevnext pull-right" ng-click="nextpage(selectedCity)">Next <i class="fa fa-arrow-right"></i></button>
+
+			<option ng-repeat="city in cityinfo" ng-value="{{city.id}}"  ng-selected="{{city.id ==cityid}}">{{city.cityname}}</option> -->
+<!-- </option> -->
+
+<!-- <select multiple style="width: 100%" ng-options="user.id as user.userName for user in userList track by user.id" ng-model="selectedUsers"> -->
+
+<select multiple style="width: 100%" ng-model="selectedUsers">
+	<option ng-selected="user.selected" ng-repeat="user in userList" ng-if="user.id !== userId" value="{{ user.id }}" class="list-group-item">{{user.userName}}</option>
+</select>

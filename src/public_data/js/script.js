@@ -58,14 +58,20 @@ app.controller('app', ($scope, socket) => {
   $scope.userList = [];
   $scope.userNameEntereds = [];
   $scope.showListUser = true;
+  $scope.invitedUsers = [];
   // $scope.chatRoom = 'Funny';
   // $scope.technology = 'this is the tech page';
   // $scope.task = 'this is the task';
+  $scope.inviteToRoom = () => {
+    $scope.showListUser = false;
+    console.log($scope.showListUser);
+  };
 
-  $scope.xs = [
-    { id: 1, value: 'value 1', selected: false },
-    { id: 2, value: 'value 2', selected: false },
-    { id: 3, value: 'value 3', selected: false }];
+  $scope.selectedUserToRoom = (selectedUsers) => {
+    $scope.showListUser = true;
+    $scope.invitedUsers = selectedUsers;
+    console.log($scope.showListUser, '>>>>>>>> Selected user '+ $scope.invitedUsers);
+  };
 
   $scope.seletedUser = selectedUser => {
     selectedUser === $scope.userId ? alert("Can't message to yourself.") : ($scope.selectedUser = selectedUser);

@@ -4,7 +4,8 @@
 	<input type="text" ng-model="chatRoom" ng-keypress="startChatRoom($event)" />
 	<br/>
 	<ul class="list-group" style="list-style: none;">
-		<li ng-repeat="userEnter in userNameEntereds">{{ userEnter.fromUserId === userId ? 'You has join the room ' + userEnter.roomName : userEnter.username + ' has join the
+		<li ng-repeat="userEnter in userNameEntereds">{{ userEnter.fromUserId === userId ? 
+			'You has join the room ' + userEnter.roomName : userEnter.username + ' has join the
 			room.' + userEnter.roomName}}
 			<a href="#/inviteToRoomChat" ng-click="inviteToRoom()" ng-if="$last">{{'invite'}}</a>
 		</li>
