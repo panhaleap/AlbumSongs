@@ -41,6 +41,10 @@ app.config(function($routeProvider) {
       templateUrl: 'viewGroupChats.html',
       controller: 'app'
     })
+    .when('/inviteToRoomChat', {
+      templateUrl: 'group-chat-invite.html',
+      controller: 'app'
+    })
     .otherwise({
       redirectTo: '/home'
     });
@@ -53,9 +57,15 @@ app.controller('app', ($scope, socket) => {
   $scope.msgData = null;
   $scope.userList = [];
   $scope.userNameEntereds = [];
+  $scope.showListUser = true;
   // $scope.chatRoom = 'Funny';
   // $scope.technology = 'this is the tech page';
   // $scope.task = 'this is the task';
+
+  $scope.xs = [
+    { id: 1, value: 'value 1', selected: false },
+    { id: 2, value: 'value 2', selected: false },
+    { id: 3, value: 'value 3', selected: false }];
 
   $scope.seletedUser = selectedUser => {
     selectedUser === $scope.userId ? alert("Can't message to yourself.") : ($scope.selectedUser = selectedUser);
@@ -89,7 +99,7 @@ app.controller('app', ($scope, socket) => {
         toId: $scope.selectedUser,
         msg: $scope.message,
         name: $scope.username,
-        fromUserId: $scope.fromUserId,
+        fromUserId: $scope.fromUserId
       });
       $scope.message = null;
     }

@@ -77,7 +77,7 @@ class Routes {
         /*
           Join Room
         */
-        if (roomName) {
+        if (roomName && roomName !== socket.room) {
           socket.join(roomName);
           this.io.sockets.in(roomName).emit('user_entered', data);
           socket.room = roomName;
@@ -85,9 +85,9 @@ class Routes {
           const clients = this.io.sockets.adapter.rooms[roomName];
           //console.log('Clients in room '+ roomName +' ' + clients);
 
-          console.log('^^^^^^^&  ', this.io.sockets.adapter.rooms);
+          console.log('^^^^^^^&  ', this.io.sockets.adapter.rooms[roomName].length, ' @@@@');
           for (let clientId in clients) {
-            console.log('>>>>>>>> +++++++++=========== ', Object.toJSON(this.io.sockets.connected[clientId]));
+            // console.log('>>>>>>>> +++++++++=========== ', Object.toJSON(this.io.sockets.connected[clientId]));
           }
         }
       });
