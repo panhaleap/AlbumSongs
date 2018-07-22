@@ -70,7 +70,16 @@ app.controller('app', ($scope, socket) => {
         fromUserId: $scope.fromUserId,
         roomName: $scope.chatRoom
       });
+      $scope.chatRoom = null;
     }
+  };
+
+  $scope.leaveRoom = () => {
+    socket.emit('leaveRoom', {
+      username: $scope.username,
+      fromUserId: $scope.fromUserId,
+      roomName: $scope.chatRoom
+    });
   };
 
   $scope.sendMsg = $event => {
@@ -81,7 +90,6 @@ app.controller('app', ($scope, socket) => {
         msg: $scope.message,
         name: $scope.username,
         fromUserId: $scope.fromUserId,
-        roomName: $scope.chatRoom
       });
       $scope.message = null;
     }
@@ -109,7 +117,6 @@ app.controller('app', ($scope, socket) => {
 
   socket.on('user_entered', data => {
     $scope.userNameEntereds.push(data);
-    $scope.chatRoom = data.roomName;
+    $scope.roomName = data.roomName;
   });
-  
 });

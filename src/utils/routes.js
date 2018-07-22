@@ -48,19 +48,21 @@ class Routes {
       socket.on('getMsg', data => {
         console.log('test getMsg', data);
 
-        socket.broadcast.to(data.toId).emit('sendMsg', {
-          msg: data.msg,
-          name: data.name,
-          fromUserId: data.fromUserId
-        });
+        if (socket.room && data.toId === null) {
+          console.log('Chatting in room: ' + socket.room);
+          this.io.sockets.in(socket.room).emit('sendMsg', {
+            msg: data.msg,
+            name: data.name,
+            fromUserId: data.fromUserId
+          });
+        } else {
+          socket.broadcast.to(data.toId).emit('sendMsg', {
+            msg: data.msg,
+            name: data.name,
+            fromUserId: data.fromUserId
+          });
 
-        // socket.emit('sendMsg', {
-        //   msg: data.msg,
-        //   name: data.name,
-        //   fromUserId: data.fromUserId
-        // });
-        if (data.roomName) {
-          this.io.sockets.in(data.roomName).emit('sendMsg', {
+          socket.emit('sendMsg', {
             msg: data.msg,
             name: data.name,
             fromUserId: data.fromUserId
@@ -75,8 +77,28 @@ class Routes {
         /*
           Join Room
         */
-        if (roomName) socket.join(roomName);
-        this.io.sockets.in(roomName).emit('user_entered', data);
+        if (roomName) {
+          socket.join(roomName);
+          this.io.sockets.in(roomName).emit('user_entered', data);
+          socket.room = roomName;
+
+          const clients = this.io.sockets.adapter.rooms[roomName];
+          //console.log('Clients in room '+ roomName +' ' + clients);
+
+          console.log('^^^^^^^&  ', this.io.sockets.adapter.rooms);
+          for (let clientId in clients) {
+            console.log('>>>>>>>> +++++++++=========== ', Object.toJSON(this.io.sockets.connected[clientId]));
+          }
+        }
+      });
+
+      /*
+         Leave Room
+      */
+      socket.on('leaveRoom', data => {
+        console.log(data.username + ' left room ', socket.room);
+        socket.leave(socket.room);
+        socket.room = null;
       });
 
       socket.on('disconnect', () => {
