@@ -31,6 +31,10 @@
                         <li class="list-group-item" ng-repeat="message in messages">
                             {{ message.fromUserId === userId ? 'You' : message.name }} says: {{ message.msg }}
                         </li>
+
+                        <li class="list-group-item">
+                            <!-- <a href="#Hello">hello</a> -->
+                        </li>
                     </ul>
                     <div class="alert alert-warning" ng-show='messages.length == 0'>
                         No messages for you.

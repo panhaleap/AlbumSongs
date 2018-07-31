@@ -98,27 +98,39 @@ class Routes {
 
       socket.on('getInvitedUsers', data => {
         if (socket.room) {
-          const invitedUsers = data.invitedUsers;
-          const invitedBy = data.invitedBy;
+          let invitedUsers = [];
+          invitedUsers = data.invitedUsers;
+          const invitedByUsername = data.invitedByUsername;
           console.log(
             ' >>>>>>>>>>> Users Invitation: users id ',
             invitedUsers,
             'to Room Chat ',
             socket.room,
             ' by ',
-            invitedBy
+            invitedByUsername
           );
 
           /*
             Notification to the room that this users has been invited to join the group chat by ...
           */
-          this.io.sockets.in(socket.room).emit('sendMsg', {
-            msg: data.msg,
-            name: data.name,
-            fromUserId: data.fromUserId
+          invitedUsers.forEach(item => {
+            const user = JSON.parse(item);
+            const inviteMsg = `&lt;a ng-click="confirm()"&gt; Click here to join group chat ${socket.room} &lt;/a/&gt;`;
+            console.log('Invited by ', user.userName);
+            console.log('Message of invitation: ', inviteMsg);
+            socket.broadcast.to(user.id).emit('sendInvite', {
+              msg: inviteMsg,
+              name: user.userName,
+              fromUserId: user.id
+            });
+
+            socket.emit('sendInvite', {
+              msg: inviteMsg,
+              name: user.userName,
+              fromUserId: user.id
+            });
           });
         }
-        
       });
 
       socket.on('disconnect', () => {

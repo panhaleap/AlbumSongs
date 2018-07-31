@@ -65,17 +65,6 @@ app.controller('app', ($scope, socket) => {
     console.log($scope.showListUser);
   };
 
-  $scope.getSelectedUsersToRoom = (selectedUsers) => {
-    $scope.showListUser = true;
-    $scope.invitedUsers = selectedUsers;
-    console.log($scope.showListUser, '>>>>>>>> Selected user '+ $scope.invitedUsers);
-
-    socket.emit('getInvitedUsers', {
-      invitedUsers: $scope.invitedUsers,
-      invitedBy: $scope.username
-    });
-  };
-
   $scope.seletedUser = selectedUser => {
     selectedUser === $scope.userId ? alert("Can't message to yourself.") : ($scope.selectedUser = selectedUser);
   };
@@ -114,6 +103,18 @@ app.controller('app', ($scope, socket) => {
     }
   };
 
+  $scope.getSelectedUsersToRoom = selectedUsers => {
+    $scope.showListUser = true;
+    $scope.invitedUsers = selectedUsers;
+    console.log($scope.showListUser, '>>>>>>>> Selected user ' + $scope.invitedUsers);
+
+    socket.emit('getInvitedUsers', {
+      invitedUsers: $scope.invitedUsers,
+      invitedByUserId: $scope.fromUserId,
+      invitedByUsername: $scope.username
+    });
+  };
+
   socket.emit('username', $scope.username);
 
   socket.on('userList', (userList, userId, userName) => {
@@ -131,6 +132,10 @@ app.controller('app', ($scope, socket) => {
   });
 
   socket.on('sendMsg', data => {
+    $scope.messages.push(data);
+  });
+
+  socket.on('sendInvite', data => {
     $scope.messages.push(data);
   });
 
